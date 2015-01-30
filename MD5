@@ -1,0 +1,10 @@
+4e0b635ad5d865bfc6ec6b6b3c51e8d2 *DESCRIPTION
+20860faaaa282dc05516b9aaffab983b *LICENSE
+5007cb200cb783281127b1fb2a5ca231 *NAMESPACE
+441b142775c1e46f5c8ea5240cdbd28c *R/get_15_min_data.R
+667b11edfb76c2e23328e2a2886ee4b1 *R/get_daily_data.R
+50e5cba0720d745993f7abe534bd2d8d *R/login.R
+9cfc5b23f42a38a3f5afc4c704111f35 *README.md
+8792040bb3ea9a8a6940f120511b3218 *man/get_15_min_data.Rd
+16a1e4b42869164cd5e00c70dcfefec6 *man/get_daily_data.Rd
+54d1a67228309ee0ce475af100ab5d42 *man/login.Rd
