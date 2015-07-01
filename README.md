@@ -1,5 +1,5 @@
 
-### fitBitScraper 0.1.3
+### fitBitScraper 0.1.4
 
 This package scrapes data from fitbit.com  
 It only works if you use email / password to login. Not sure about facebook or google login.  
@@ -7,7 +7,7 @@ It only works if you use email / password to login. Not sure about facebook or g
 Usage:  
 
 ```R
-devtools::install_github("corynissen/fitbitScraper@dev")  
+install.packages("fitbitScraper")
 library("fitbitScraper")
 
 cookie <- login(email="corynissen@gmail.com", password="mypassword")  
@@ -29,9 +29,7 @@ df <- get_daily_data(cookie, what="steps", start_date="2015-01-13", end_date="20
 ggplot(df) + geom_point(aes(x=time, y=data))  
 ```
 ### New functions 
-- get_sleep_data()
-- get_weight_data() 
-- get_premium_export() 
+- get_activity_data()
 - get_intraday_data() , replaces deprecated get_15_min_data()
 
 Just added support for heart rate data in get_intraday_data() and get_daily_data()...  
