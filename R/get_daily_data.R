@@ -24,8 +24,7 @@ get_daily_data <- function(cookie, what="steps", start_date, end_date){
   if(!grepl("[0-9]{4}-[0-9]{2}-[0-9]{2}", end_date)){stop('end_date must have format "YYYY-MM-DD"')}
   if(!what %in% c("steps", "distance", "floors", "minutesVery", "caloriesBurnedVsIntake",
                   "getTimeInHeartRateZonesPerDay", "getRestingHeartRateData")){
-    stop('what must be one of "steps", "distance", "floors", "minutesVery", "caloriesBurnedVsIntake",
-         "getTimeInHeartRateZonesPerDay", "getRestingHeartRateData"')
+    stop('what must be one of "steps", "distance", "floors", "minutesVery", "caloriesBurnedVsIntake", "getTimeInHeartRateZonesPerDay", "getRestingHeartRateData"')
   }
 
   if(what %in% c("getTimeInHeartRateZonesPerDay", "getRestingHeartRateData")){
@@ -39,7 +38,7 @@ get_daily_data <- function(cookie, what="steps", start_date, end_date){
                       '"}]}'
     )
     csrfToken <- stringr::str_extract(cookie,
-                                      "[A-Z0-9]{8}\\-[A-Z0-9]{4}\\-[A-Z0-9]{4}\\-[A-Z0-9]{4}\\-[0-9A-Z]{12}")
+      "[A-Z0-9]{8}\\-[A-Z0-9]{4}\\-[A-Z0-9]{4}\\-[A-Z0-9]{4}\\-[0-9A-Z]{12}")
     body <- list(request=request, csrfToken = csrfToken)
     response <- httr::POST(url, body=body, httr::config(cookie=cookie))
   }else{
@@ -54,52 +53,24 @@ get_daily_data <- function(cookie, what="steps", start_date, end_date){
   }
 
   dat_string <- methods::as(response, "character")
-  dat_list <- RJSONIO::fromJSON(dat_string, asText=TRUE)
+  dat_list <- jsonlite::fromJSON(dat_string)
 
   if(what=="getTimeInHeartRateZonesPerDay"){
-    zones <- sapply(dat_list, "[", "value")
-    times <- as.character(unlist(sapply(dat_list, "[", "dateTime")))
-    if(is.null(unlist(sapply(zones, "[", "IN_DEFAULT_ZONE_1")))){
-      zone1 <- rep(0, length(times))
-    }else{
-      zone1 <- sapply(zones, "[", "IN_DEFAULT_ZONE_1")
-      zone1 <- unname(sapply(zone1, function(x)ifelse(is.null(x), 0, x)))
-    }
-    if(is.null(unlist(sapply(zones, "[", "IN_DEFAULT_ZONE_2")))){
-      zone2 <- rep(0, length(times))
-    }else{
-      zone2 <- sapply(zones, "[", "IN_DEFAULT_ZONE_2")
-      zone2 <- unname(sapply(zone2, function(x)ifelse(is.null(x), 0, x)))
-    }
-    if(is.null(unlist(sapply(zones, "[", "IN_DEFAULT_ZONE_3")))){
-      zone3 <- rep(0, length(times))
-    }else{
-      zone3 <- sapply(zones, "[", "IN_DEFAULT_ZONE_3")
-      zone3 <- unname(sapply(zone3, function(x)ifelse(is.null(x), 0, x)))
-    }
-    df <- data.frame(time=times,
-                     zone1=zone1,
-                     zone2=zone2,
-                     zone3=zone3,
-                     stringsAsFactors=F)
+    df <- cbind(dat_list$dateTime, dat_list$value, stringsAsFactors=FALSE)
+    names(df)[1:3] <- c("time", "zone1", "zone2", "zone3")
   }else if(what=="getRestingHeartRateData"){
-    df <- data.frame(time=as.character(unlist(sapply(dat_list$dataPoints, "[", "date"))),
-                     data=as.numeric(unlist(sapply(dat_list$dataPoints, "[", "value"))),
-                     stringsAsFactors=F)
-    names(df) <- c("time", what)
+    df <- dat_list$dataPoints
+    df <- df[, c("date", "value")]
+    names(df)[1:2] <- c("time", "restingHeartRate")
   }else if(what=="caloriesBurnedVsIntake"){
-    burned_list <- dat_list[[1]]$dataSets$activity$dataPoints
-    intake_list <- dat_list[[1]]$dataSets$caloriesIntake$dataPoints
-    df <- data.frame(time=as.character(unlist(sapply(burned_list, "[", "dateTime"))),
-                     caloriesBurned=as.numeric(unlist(sapply(burned_list, "[", 2))),
-                     coloriesIntake=as.numeric(unlist(sapply(intake_list, "[", 2))),
-                     stringsAsFactors=F)
+    df_burn <- dat_list[["graph"]][["dataSets"]][["activity"]][["dataPoints"]]
+    df_int <- dat_list[["graph"]][["dataSets"]][["caloriesIntake"]][["dataPoints"]]
+    names(df_burn)[1:2] <- c("time", "caloriesBurned")
+    names(df_int)[1:2] <- c("time", "caloriesIntake")
+    df <- merge(df_burn, df_int, by="time")
   }else{
-    dat_list <- dat_list[[1]]$dataSets$activity$dataPoints
-    df <- data.frame(time=as.character(unlist(sapply(dat_list, "[", "dateTime"))),
-                     data=as.numeric(unlist(sapply(dat_list, "[", 2))),
-                     stringsAsFactors=F)
-    names(df) <- c("time", what)
+    df <- dat_list[["graph"]][["dataSets"]][["activity"]][["dataPoints"]]
+    names(df)[1:2] <- c("time", what)
   }
 
   if(what=="getRestingHeartRateData"){

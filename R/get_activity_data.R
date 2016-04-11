@@ -40,29 +40,25 @@ get_activity_data <- function(cookie, end_date){
   )
   
   csrfToken <- stringr::str_extract(cookie,
-                                    "[A-Z0-9]{8}\\-[A-Z0-9]{4}\\-[A-Z0-9]{4}\\-[A-Z0-9]{4}\\-[0-9A-Z]{12}")
+    "[A-Z0-9]{8}\\-[A-Z0-9]{4}\\-[A-Z0-9]{4}\\-[A-Z0-9]{4}\\-[0-9A-Z]{12}")
   body <- list(request=request, csrfToken = csrfToken)
   response <- httr::POST(url, body=body, httr::config(cookie=cookie))
 
   dat_string <- methods::as(response, "character")
-  dat_list <- RJSONIO::fromJSON(dat_string, asText=TRUE)
-
-  df <- data.frame(id=sapply(dat_list[[2]]$result, "[[", "id"),
-                   name=sapply(dat_list[[2]]$result, "[[", "name"),
-                   date=sapply(dat_list[[2]]$result, "[[", "formattedDate"),
-                   start_time=sapply(dat_list[[2]]$result, "[[", "formattedStartTime"),
-                   end_time=sapply(dat_list[[2]]$result, "[[", "formattedEndTime"),
-                   distance=sapply(dat_list[[2]]$result, "[[", "formattedDistance"),
-                   duration=sapply(dat_list[[2]]$result, "[[", "formattedDuration"),
-                   calories=sapply(dat_list[[2]]$result, "[[", "calories"),
-                   steps=sapply(dat_list[[2]]$result, "[[", "steps"),
-                   stringsAsFactors=FALSE
-  )
+  dat_list <- jsonlite::fromJSON(dat_string)
+  
+  if("GET /api/2/user/activities/logs" %in% names(dat_list)){
+    df <- dat_list[["GET /api/2/user/activities/logs"]]["result"][[1]]
+  }else{
+    df <- NULL
+    print("unable to retrieve activities data")
+  }
+  
   tz <- Sys.timezone()
   if(is.null(tz) | is.na(tz)){tz <- format(Sys.time(),"%Z")}
-  df$start_datetime <- as.POSIXct(paste0(df$date, " ", df$start_time),
+  df$start_datetime <- as.POSIXct(paste0(df$date, " ", df$formattedStartTime),
                                   format="%Y-%m-%d %H:%M", tz=tz)
-  df$end_datetime <- as.POSIXct(paste0(df$date, " ", df$end_time),
+  df$end_datetime <- as.POSIXct(paste0(df$date, " ", df$formattedEndTime),
                                   format="%Y-%m-%d %H:%M", tz=tz)
   
   return(df)

@@ -1,5 +1,5 @@
 
-### fitbitScraper 0.1.5
+### fitbitScraper 0.1.6
 
 This package scrapes data from fitbit.com  
 It only works if you use email / password to login. Not sure about facebook or google login.  
@@ -12,7 +12,7 @@ library("fitbitScraper")
 
 cookie <- login(email="corynissen@gmail.com", password="mypassword")  
 # 15_min_data "what" options: "steps", "distance", "floors", "active-minutes", "calories-burned"   
-df <- get_15_min_data(cookie, what="steps", date="2015-01-21")  
+df <- get_activity_data(cookie, what="steps", date="2015-01-21")  
 library("ggplot2")  
 ggplot(df) + geom_bar(aes(x=time, y=data, fill=data), stat="identity") + 
              xlab("") +ylab("steps") + 

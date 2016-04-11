@@ -51,7 +51,7 @@ get_premium_export <- function(cookie, what="ACTIVITIES", start_date="2015-01-13
     stop("problem with request, this may be available only for premium subscribers")
   }
   file_id <- methods::as(response, "character")
-  file_id <- RJSONIO::fromJSON(file_id, asText=TRUE)
+  file_id <- jsonlite::fromJSON(file_id)
   file_id <- file_id["fileIdentifier"]
 
   # see if file ready for download
@@ -77,9 +77,8 @@ get_premium_export <- function(cookie, what="ACTIVITIES", start_date="2015-01-13
   }
 
   a <- httr::GET(paste0("https://www.fitbit.com/premium/export/download/",
-                      file_id))
+                        file_id))
   df <- utils::read.csv(text=methods::as(a, "character"), skip=1, 
                         stringsAsFactors=F)
-
   return(df)
 }
