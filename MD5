@@ -1,7 +1,7 @@
-0f2bb69c7fa616218574664c6aea3e36 *DESCRIPTION
+1316fb002b8d2000506141b342b5435d *DESCRIPTION
 d499114c8fb7674b84d73553dd6e8d9a *LICENSE
 af05ec54f552800fae2fa87191cbef9c *NAMESPACE
-88390e2e5dd3e55a0c71f936eb4f60bc *NEWS.md
+6c6b1fe6226af70ba953aec1b66d5b32 *NEWS.md
 ca12202aff2a6dd5b672b54b269170fe *R/get_activity_data.R
 6f22f81c632183d6bb0d26638f2741c5 *R/get_daily_data.R
 bbdfa193a0b307c8f634c89681ad87d1 *R/get_intraday_data.R
@@ -9,7 +9,11 @@ c1b92b4d6f2af001a7c7227c927360f4 *R/get_premium_export.R
 a363b6cd2faa8a8ccfdb2052dfb42540 *R/get_sleep_data.R
 e541d7ca220d36967d1e210f94f6ce68 *R/get_weight_data.R
 102dcc2840fa122eea731fa2f5b4b6c8 *R/login.R
-9f7ac5485822d04895cd5ad0a64abf34 *README.md
+a5dfa3c770b3e2fa88f19a8788a2bfeb *README.md
+2b652519e0db5c2000f87c1fb9c79f13 *build/vignette.rds
+0834d2d5146972b7fcf319fadfbb7c37 *inst/doc/fitbitScraper-examples.R
+c7eceade09e11fbd5338f2da0b26a6d6 *inst/doc/fitbitScraper-examples.Rmd
+da9afc6a287ba001a93f404c0255615c *inst/doc/fitbitScraper-examples.html
 b4bd6aacbc1f19392f02d757e13ac0ee *man/get_activity_data.Rd
 5780a406e827724de4d3cc2b96913fd1 *man/get_daily_data.Rd
 b9312f0b0bace2795a3229bc19efeac3 *man/get_intraday_data.Rd
@@ -17,3 +21,4 @@ b9312f0b0bace2795a3229bc19efeac3 *man/get_intraday_data.Rd
 cf2f8c7c4abd423007bdf5db9b0abd15 *man/get_sleep_data.Rd
 dc0c871efcadc80badd75074df7629af *man/get_weight_data.Rd
 88fd5d742acc1558be0f54313b60c675 *man/login.Rd
+c7eceade09e11fbd5338f2da0b26a6d6 *vignettes/fitbitScraper-examples.Rmd
