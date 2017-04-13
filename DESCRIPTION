@@ -1,6 +1,6 @@
 Package: fitbitScraper
 Title: Scrapes Data from Fitbit
-Version: 0.1.7
+Version: 0.1.8
 Author: Cory Nissen <corynissen@gmail.com> [aut, cre]
 Maintainer: Cory Nissen <corynissen@gmail.com>
 Description: Scrapes data from Fitbit <http://www.fitbit.com>. This does not use the official
@@ -11,10 +11,10 @@ License: MIT + file LICENSE
 LazyData: true
 Imports: httr, stringr, jsonlite, methods, utils
 URL: https://github.com/corynissen/fitbitScraper
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Suggests: knitr, rmarkdown, ggplot2, ggthemes
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2016-05-19 12:20:00 UTC; 60018847
+Packaged: 2017-04-13 15:19:10 UTC; 60018847
 Repository: CRAN
-Date/Publication: 2016-05-19 20:31:18
+Date/Publication: 2017-04-13 22:12:40 UTC
